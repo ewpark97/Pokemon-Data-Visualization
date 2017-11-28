@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1511858457040.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2605828168",
+    "id" : "72F7F75B",
+    "lastKnownWriteTime" : 1511861096,
+    "last_content_update" : 1511861096751,
+    "path" : "~/Desktop/INFO 201/pokemon/ui.R",
+    "project_path" : "ui.R",
+    "properties" : {
+        "cursorPosition" : "13,58",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

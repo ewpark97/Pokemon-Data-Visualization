@@ -1,0 +1,9 @@
+{
+    "path" : "~/Desktop/INFO 201/pokemon",
+    "sortOrder" : [
+        {
+            "ascending" : true,
+            "columnIndex" : 2
+        }
+    ]
+}

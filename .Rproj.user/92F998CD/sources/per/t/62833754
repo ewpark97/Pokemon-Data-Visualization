@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1511858441410.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1061137850",
+    "id" : "62833754",
+    "lastKnownWriteTime" : 1511860775,
+    "last_content_update" : 1511860775966,
+    "path" : "~/Desktop/INFO 201/pokemon/server.R",
+    "project_path" : "server.R",
+    "properties" : {
+        "cursorPosition" : "3,0",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
