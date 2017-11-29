@@ -1,5 +1,6 @@
 library(radarchart)
 library(tidyr)
+library(scatterD3)
 suppressMessages(library(dplyr))
 suppressMessages(library(shiny))
 
@@ -45,9 +46,46 @@ function(input, output) {
     
     radarDF <- gather(radarDF, key=Label, value=Score, -Name) %>%
       spread(key=Name, value=Score)
-    chartJSRadar(radarDF, maxScale = maxVal, showToolTipLabel=TRUE, main = ifelse(nrow(radarData()) >= 2,
-                                                                               paste(radarData()[1,'Name'], 'vs.', 
-                                                                                     radarData()[2,'Name']), paste('')))
+    chartJSRadar(radarDF, maxScale = maxVal, showToolTipLabel=TRUE)
+  })
+  
+  output$x_axis <- renderUI({
+    selectInput("x", "x variable:",
+                choices=c(colnames(ds[5:12])),
+                selected = "HP")
+  })
+  
+  output$y_axis <- renderUI({
+    selectInput("y", "y variable:", 
+                choices=c(colnames(ds[5:12])),
+                selected = "Attack")
+  })
+  
+  output$color <- renderUI({
+    selectInput("color", "color:", 
+                choices=c(colnames(ds[3:13])),
+                selected = "Type 2")
+  })
+  
+  data <- reactive({
+    ds[1:input$obs,]
+  })
+  
+  output$stats <- renderScatterD3({
+    scatterD3(x = data()[,input$x], 
+              y = data()[,input$y], 
+              lab = data()[,'Name'],
+              xlab = input$x,
+              ylab = input$y,
+              col_var = data()[,input$color], 
+              col_lab = input$color,
+              symbol_var = data()[,'Type 1'],
+              symbol_lab = 'Type 1',
+              point_opacity = input$pointAlpha,
+              point_size = input$pointSize,
+              labels_size = input$labelSize,
+              transitions = input$transitions
+    )
   })
 }
 
