@@ -2,6 +2,7 @@ library(fmsb)
 library(dplyr)
 library(shiny)
 
+setwd('~/Desktop/INFO 201/pokemon/')
 ds <- read.csv('Pokemon.csv')
 
 colnames(ds) <- c('ID', 'Name', 'Type 1', 'Type 2', 'Total', 
