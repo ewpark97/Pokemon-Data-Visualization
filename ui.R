@@ -1,5 +1,5 @@
-library(shiny)
-library(fmsb)
+suppressMessages(library(shiny))
+library(radarchart)
 
 fluidPage(
   titlePanel("Pokemon Match Up"),
@@ -11,10 +11,11 @@ fluidPage(
                 value = "Bulbasaur"),
       textInput("pokemon_2", "Input 2nd pokemon: ", 
                 value = "Pikachu"),
+      actionButton("go", "Enter"),
       h5(uiOutput('matchUp'))
     ),
     mainPanel(
-      plotOutput("radarPlot", width = "600", height = "600")
+      chartJSRadarOutput("radar", width = "600", height = "600"), width = 8
     )
   )
 )

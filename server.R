@@ -1,6 +1,7 @@
-library(fmsb)
-library(dplyr)
-library(shiny)
+library(radarchart)
+library(tidyr)
+suppressMessages(library(dplyr))
+suppressMessages(library(shiny))
 
 ds <- read.csv('Pokemon.csv')
 
@@ -11,46 +12,18 @@ colnames(ds) <- c('ID', 'Name', 'Type 1', 'Type 2', 'Total',
 
 function(input, output) {
   radarData <- reactive({
-    pokemon_1_name <- paste0(toupper(substr(input$pokemon_1, 1, 1)), 
-                             tolower(substring(input$pokemon_1, 2)))
-    pokemon_2_name <- paste0(toupper(substr(input$pokemon_2, 1, 1)), 
-                             tolower(substring(input$pokemon_2, 2)))
+    input$go
+    
+    pokemon_1_name <- paste0(toupper(substr(isolate(input$pokemon_1), 1, 1)), 
+                             tolower(substring(isolate(input$pokemon_1), 2)))
+    pokemon_2_name <- paste0(toupper(substr(isolate(input$pokemon_2), 1, 1)), 
+                             tolower(substring(isolate(input$pokemon_2), 2)))
     pokemon_1 <- filter(ds, Name == pokemon_1_name)
     pokemon_2 <- filter(ds, Name == pokemon_2_name)
     
     df <- rbind(pokemon_1, pokemon_2)
   })
-  output$radarPlot <- renderPlot({
-    colors_border <- c(rgb(0.2,0.5,0.5,0.9), rgb(0.8,0.2,0.5,0.9))
-    colors_fill <- c(rgb(0.2,0.5,0.5,0.4), rgb(0.8,0.2,0.5,0.4))
-    
-    radarchart(rbind(rep(max(radarData()[, 6:11]), 6), rep(0, 6), 
-                     radarData()[, 6:11]),
-               title = paste(radarData()[1,'Name'], 'vs.', 
-                             radarData()[2,'Name']),
-               axistype = 1,
-               pcol = colors_border, 
-               pfcol = colors_fill, 
-               plwd = 4, 
-               plty = 1,
-               cglcol = "grey", 
-               cglty = 3, 
-               axislabcol = "grey", 
-               caxislabels = seq(0, max(radarData()[, 6:11]),
-                                 max(radarData()[, 6:11])/4), 
-               cglwd = 1.2,
-               vlcex = 1.2)
-    
-    legend(x = 0.5, 
-           y = 1, 
-           legend = radarData()[,'Name'], 
-           bty = 'n',
-           pch = 20, 
-           col = colors_fill, 
-           text.col = colors_border, 
-           cex = 1.2, 
-           pt.cex = 3)
-  })
+  
   output$matchUp <- renderText({
     if (nrow(radarData()) >= 2) {
       if (radarData()[1, 'Total'] > radarData()[2, 'Total']) {
@@ -62,4 +35,19 @@ function(input, output) {
       }
     }
   })
+  
+  output$radar <- renderChartJSRadar({
+    ds <- radarData()
+    
+    maxVal <- max(ds[, 6:11])
+    
+    radarDF <- ds %>% select(Name, 6:11) %>% as.data.frame()
+    
+    radarDF <- gather(radarDF, key=Label, value=Score, -Name) %>%
+      spread(key=Name, value=Score)
+    chartJSRadar(radarDF, maxScale = maxVal, showToolTipLabel=TRUE, main = ifelse(nrow(radarData()) >= 2,
+                                                                               paste(radarData()[1,'Name'], 'vs.', 
+                                                                                     radarData()[2,'Name']), paste('')))
+  })
 }
+

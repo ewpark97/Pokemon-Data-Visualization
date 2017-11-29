@@ -26,8 +26,9 @@ function(input, output) {
     
     radarchart(rbind(rep(max(radarData()[, 6:11]), 6), rep(0, 6), 
                      radarData()[, 6:11]),
-               title = paste(radarData()[1,'Name'], 'vs.', 
-                             radarData()[2,'Name']),
+               title = ifelse(nrow(radarData()) >= 2,
+                              paste(radarData()[1,'Name'], 'vs.', 
+                             radarData()[2,'Name']), paste('')),
                axistype = 1,
                pcol = colors_border, 
                pfcol = colors_fill, 
