@@ -2,6 +2,7 @@ suppressMessages(library(shiny))
 library(scatterD3)
 library(radarchart)
 
+
 fluidPage(
   navbarPage("Pokemon Dataset",
     tabPanel("Pokemon Match Up",
@@ -20,6 +21,21 @@ fluidPage(
         )
       )
     ),
+    
+    tabPanel("Top Stats Distribution",
+             sidebarLayout(
+               sidebarPanel(
+                 sliderInput("top_obs", "Top quantity:",
+                             value = 10, min = 1, max = 800,
+                             step = 1)
+               ),
+               
+               mainPanel(
+                 chartJSRadarOutput("topRadar", width = "600", height = "600")
+               )
+             )
+    ),
+            
     tabPanel("Stats vs. Stats",
              sidebarLayout(
                sidebarPanel(

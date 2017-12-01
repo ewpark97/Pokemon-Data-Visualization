@@ -11,6 +11,10 @@ colnames(ds) <- c('ID', 'Name', 'Type 1', 'Type 2', 'Total',
                   'Defense Speed', 'Speed', 'Generation', 
                   'Legendary')
 
+dsTop15 <- filter(ds, ds$Total > 680)
+
+
+
 function(input, output) {
   radarData <- reactive({
     input$go
@@ -37,16 +41,20 @@ function(input, output) {
     }
   })
   
-  output$radar <- renderChartJSRadar({
-    ds <- radarData()
-    
+  topData <- reactive({
+    ds %>%
+      arrange(desc(Total)) %>%
+      head(n = input$top_obs)
+  })
+  
+  output$topRadar <- renderChartJSRadar({
+    ds <- topData()
     maxVal <- max(ds[, 6:11])
-    
     radarDF <- ds %>% select(Name, 6:11) %>% as.data.frame()
-    
     radarDF <- gather(radarDF, key=Label, value=Score, -Name) %>%
       spread(key=Name, value=Score)
-    chartJSRadar(radarDF, maxScale = maxVal, showToolTipLabel=TRUE)
+    chartJSRadar(radarDF, maxScale = maxVal, showToolTipLabel=TRUE,
+                 showLegend = FALSE, polyAlpha = 0.15, lineAlpha = 0.1)
   })
   
   output$x_axis <- renderUI({
