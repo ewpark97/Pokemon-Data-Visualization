@@ -7,8 +7,8 @@ suppressMessages(library(shiny))
 ds <- read.csv('Pokemon.csv')
 
 colnames(ds) <- c('ID', 'Name', 'Type 1', 'Type 2', 'Total', 
-                  'HP', 'Attack', 'Defense', 'Attack Speed',
-                  'Defense Speed', 'Speed', 'Generation', 
+                  'HP', 'Attack', 'Defense', 'Special Attack',
+                  'Special Defense', 'Speed', 'Generation', 
                   'Legendary')
 
 dsTop15 <- filter(ds, ds$Total > 680)
@@ -17,8 +17,7 @@ dsTop15 <- filter(ds, ds$Total > 680)
 
 function(input, output) {
   radarData <- reactive({
-    input$go
-    
+
     pokemon_1_name <- paste0(toupper(substr(isolate(input$pokemon_1), 1, 1)), 
                              tolower(substring(isolate(input$pokemon_1), 2)))
     pokemon_2_name <- paste0(toupper(substr(isolate(input$pokemon_2), 1, 1)), 
@@ -76,9 +75,8 @@ function(input, output) {
   })
   
   data <- reactive({
-    ds[1:input$obs,]
+    ds[input$obs[1]:input$obs[2],]
   })
-  
   output$stats <- renderScatterD3({
     scatterD3(x = data()[,input$x], 
               y = data()[,input$y], 

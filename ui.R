@@ -25,8 +25,8 @@ fluidPage(
     tabPanel("Top Stats Distribution",
              sidebarLayout(
                sidebarPanel(
-                 sliderInput("top_obs", "Top quantity:",
-                             value = 10, min = 1, max = 800,
+                 sliderInput("top_obs", "Quantity Range:",
+                             value = 1, min = 1, max = 800,
                              step = 1)
                ),
                
@@ -40,7 +40,7 @@ fluidPage(
              sidebarLayout(
                sidebarPanel(
                  sliderInput("obs", "number of observations:",
-                             value = 10, min = 1, max = 800,
+                             value = c(1,10), min = 1, max = 800,
                              step = 1),
                  uiOutput("x_axis"),
                  uiOutput("y_axis"),
