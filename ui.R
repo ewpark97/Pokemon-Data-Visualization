@@ -9,10 +9,10 @@ fluidPage(
       sidebarLayout(
         position = "right",
         sidebarPanel(
-          textInput("pokemon_1", "1st Pokemon: ", 
-                    value = "Bulbasaur"),
-          textInput("pokemon_2", "2nd Pokemon: ", 
-                    value = "Pikachu"),
+          selectInput("pokemon_1", "1st Pokemon: ", 
+                    ds$Name),
+          selectInput("pokemon_2", "2nd Pokemon: ", 
+                    ds$Name),
           actionButton("go", "Enter"),
           h5(uiOutput('matchUp'))
         ),
