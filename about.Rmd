@@ -1,15 +1,25 @@
-## About the Project
+## **About the Project**
 See the data, Pokemon with Stats, that was we used [here](https://www.kaggle.com/abcsds/pokemon).
 
-## Learn about pokemons
-* Compare pokemons and see which is stronger based on stats using the Pokemon Match Up.
-* Look at the strongest pokemons with the Top Stats Distribution.
-* Learn more with thorough analysis of the pokemons' stats
 
-## Link to code
+## **Learn about pokemons**
+### Pokemon Match Up
+* Compare pokemons and see which is stronger based on stats using the Pokemon Match Up
+
+### Stats vs. Stats
+* Learn more with a thorough analysis of the pokemons' stats
+* Customize the visualization to fit your own need
+
+### Top Stats Distribution
+* Look at the strongest pokemons with the Top Stats Distribution
+* Change the quanitly of pokemons displayed
+
+
+## **Link to code**
 See our github page [here](https://github.com/ewpark97/pokemon.git).
 
-## Our contributors
+
+## **Our contributors**
 * Gilbert Febianto
 * Fangwen Ge
 * Eun Won Park

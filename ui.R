@@ -39,22 +39,22 @@ fluidPage(
     tabPanel("Stats vs. Stats",
              sidebarLayout(
                sidebarPanel(
-                 sliderInput("obs", "number of observations:",
+                 sliderInput("obs", "Number of Observations:",
                              value = c(1,10), min = 1, max = 800,
                              step = 1),
                  uiOutput("x_axis"),
                  uiOutput("y_axis"),
                  uiOutput("color"),
-                 sliderInput("pointSize", "point size:",
+                 sliderInput("pointSize", "Point Size:",
                              value = 50, min = 0, max = 100,
                              step = 0.1),
-                 sliderInput("pointAlpha", "alpha:",
+                 sliderInput("pointAlpha", "Alpha:",
                              value = 0.7, min = 0, max = 1,
                              step = 0.1),
-                 sliderInput("labelSize", "label size:",
+                 sliderInput("labelSize", "Label Size:",
                              value = 11, min = 0, max = 25,
                              step = 1),
-                 checkboxInput("transitions", "use transitions:", 
+                 checkboxInput("transitions", "Use Transitions:", 
                                value = TRUE)
                ),
                
