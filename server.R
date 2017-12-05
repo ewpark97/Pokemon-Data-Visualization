@@ -74,6 +74,7 @@ function(input, output) {
   
   scatterData <- reactive({
     ds[1:input$scatter_obs,]
+    
   })
   
   output$stats <- renderScatterD3({
@@ -101,7 +102,7 @@ function(input, output) {
   
   output$topRadar <- renderChartJSRadar({
     ds <- topData()
-    
+    ds <- filter(ds, ds[, 2] == input$type | ds[, 3] == input$type)
     maxVal <- max(ds[, 6:11])
     
     radarDF <- ds %>% select(Name, 6:11) %>% as.data.frame()

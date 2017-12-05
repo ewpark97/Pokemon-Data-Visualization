@@ -2,6 +2,7 @@ suppressMessages(library(shiny))
 library(scatterD3)
 library(radarchart)
 
+types <- c('Normal', 'Fire', 'Water', 'Electric', 'Grass', 'Ice', 'Fighting', 'Poison', 'Ground', 'Flying', 'Psychic', 'Bug', 'Rock', 'Ghost', 'Dragon', 'Dark', 'Steel', 'Fairy')
 fluidPage(
   navbarPage("Pokemon Dataset",
              tabPanel("Pokemon Match Up",
@@ -30,6 +31,9 @@ fluidPage(
                           uiOutput("scatter_y_axis"),
                           uiOutput("scatter_symbol"),
                           uiOutput("scatter_color"),
+                          selectInput("type", "type:", 
+                                      choices = types, selected = NULL
+                                      ),
                           sliderInput("scatter_pointSize", "point size:",
                                       value = 50, min = 0, max = 100,
                                       step = 0.1),
