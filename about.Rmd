@@ -4,14 +4,14 @@ See the data, Pokemon with Stats, that was we used [here](https://www.kaggle.com
 
 ## **Learn about pokemons**
 ### Pokemon Match Up
-* Compare pokemons and see which is stronger based on stats using the Pokemon Match Up
+* Enter pokemon names and compare them to see which is stronger based on stats
 
 ### Stats vs. Stats
 * Learn more with a thorough analysis of the pokemons' stats
 * Customize the visualization to fit your own need
 
 ### Top Stats Distribution
-* Look at the strongest pokemons with the Top Stats Distribution
+* Look at the strongest pokemons
 * Change the quanitly of pokemons displayed
 
 
