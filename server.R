@@ -4,24 +4,22 @@ library(scatterD3)
 suppressMessages(library(dplyr))
 suppressMessages(library(shiny))
 
-ds <- read.csv('Pokemon.csv')
+ds <- read.csv('Pokemon.csv') %>%
+  mutate(Type.2 = ifelse(Type.2 == '', '-', paste(Type.2)))
 
 colnames(ds) <- c('ID', 'Name', 'Type 1', 'Type 2', 'Total', 
                   'HP', 'Attack', 'Defense', 'Special Attack',
                   'Special Defense', 'Speed', 'Generation', 
                   'Legendary')
 
-dsTop15 <- filter(ds, ds$Total > 680)
-
-
-
 function(input, output) {
   radarData <- reactive({
-
-    pokemon_1_name <- paste0(toupper(substr(isolate(input$pokemon_1), 1, 1)), 
-                             tolower(substring(isolate(input$pokemon_1), 2)))
-    pokemon_2_name <- paste0(toupper(substr(isolate(input$pokemon_2), 1, 1)), 
-                             tolower(substring(isolate(input$pokemon_2), 2)))
+    input$matchUp_go
+    
+    pokemon_1_name <- paste0(toupper(substr(isolate(input$matchUp_pokemon_1), 1, 1)), 
+                             tolower(substring(isolate(input$matchUp_pokemon_1), 2)))
+    pokemon_2_name <- paste0(toupper(substr(isolate(input$matchUp_pokemon_2), 1, 1)), 
+                             tolower(substring(isolate(input$matchUp_pokemon_2), 2)))
     pokemon_1 <- filter(ds, Name == pokemon_1_name)
     pokemon_2 <- filter(ds, Name == pokemon_2_name)
     
@@ -40,6 +38,63 @@ function(input, output) {
     }
   })
   
+  output$radar <- renderChartJSRadar({
+    ds <- radarData()
+    
+    maxVal <- max(ds[, 6:11])
+    
+    radarDF <- ds %>% select(Name, 6:11) %>% as.data.frame()
+    
+    radarDF <- gather(radarDF, key=Label, value=Score, -Name) %>%
+      spread(key=Name, value=Score)
+    chartJSRadar(radarDF, maxScale = maxVal, showToolTipLabel=TRUE)
+  })
+  
+  output$scatter_x_axis <- renderUI({
+    selectInput("scatter_x", "x variable:",
+                choices=c(colnames(ds[5:12])),
+                selected = "HP")
+  })
+  
+  output$scatter_y_axis <- renderUI({
+    selectInput("scatter_y", "y variable:", 
+                choices=c(colnames(ds[5:12])),
+                selected = "Attack")
+  })
+  
+  output$scatter_symbol <- renderUI({
+    selectInput("scatter_symbol", "symbol variable:", 
+                choices=c('Generation', 'Legendary'),
+                selected = "Generation")
+  })
+  
+  output$scatter_color <- renderUI({
+    selectInput("scatter_color", "color variable:", 
+                choices=c(colnames(ds[3:13])),
+                selected = "Type 1")
+  })
+  
+  scatterData <- reactive({
+    ds[1:input$scatter_obs,]
+  })
+  
+  output$stats <- renderScatterD3({
+    scatterD3(x = scatterData()[,input$scatter_x], 
+              y = scatterData()[,input$scatter_y], 
+              lab = scatterData()[,'Name'],
+              xlab = input$scatter_x,
+              ylab = input$scatter_y,
+              col_var = scatterData()[,input$scatter_color], 
+              col_lab = input$scatter_color,
+              symbol_var = scatterData()[,input$scatter_symbol], 
+              symbol_lab = input$scatter_symbol,
+              point_opacity = input$scatter_pointAlpha,
+              point_size = input$scatter_pointSize,
+              labels_size = input$scatter_labelSize,
+              transitions = input$scatter_transitions
+    )
+  })
+  
   topData <- reactive({
     ds %>%
       arrange(desc(Total)) %>%
@@ -48,50 +103,15 @@ function(input, output) {
   
   output$topRadar <- renderChartJSRadar({
     ds <- topData()
+    
     maxVal <- max(ds[, 6:11])
+    
     radarDF <- ds %>% select(Name, 6:11) %>% as.data.frame()
+    
     radarDF <- gather(radarDF, key=Label, value=Score, -Name) %>%
       spread(key=Name, value=Score)
     chartJSRadar(radarDF, maxScale = maxVal, showToolTipLabel=TRUE,
                  showLegend = FALSE, polyAlpha = 0.15, lineAlpha = 0.1)
-  })
-  
-  output$x_axis <- renderUI({
-    selectInput("x", "x variable:",
-                choices=c(colnames(ds[5:12])),
-                selected = "HP")
-  })
-  
-  output$y_axis <- renderUI({
-    selectInput("y", "y variable:", 
-                choices=c(colnames(ds[5:12])),
-                selected = "Attack")
-  })
-  
-  output$color <- renderUI({
-    selectInput("color", "color:", 
-                choices=c(colnames(ds[3:13])),
-                selected = "Type 2")
-  })
-  
-  data <- reactive({
-    ds[input$obs[1]:input$obs[2],]
-  })
-  output$stats <- renderScatterD3({
-    scatterD3(x = data()[,input$x], 
-              y = data()[,input$y], 
-              lab = data()[,'Name'],
-              xlab = input$x,
-              ylab = input$y,
-              col_var = data()[,input$color], 
-              col_lab = input$color,
-              symbol_var = data()[,'Type 1'],
-              symbol_lab = 'Type 1',
-              point_opacity = input$pointAlpha,
-              point_size = input$pointSize,
-              labels_size = input$labelSize,
-              transitions = input$transitions
-    )
   })
 }
 
