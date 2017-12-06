@@ -1,7 +1,7 @@
 suppressMessages(library(shiny))
 library(scatterD3)
 library(radarchart)
-
+ds <- read.csv('Pokemon.csv')
 types <- c('Normal', 'Fire', 'Water', 'Electric', 'Grass', 'Ice', 'Fighting', 'Poison', 'Ground', 'Flying', 'Psychic', 'Bug', 'Rock', 'Ghost', 'Dragon', 'Dark', 'Steel', 'Fairy')
 fluidPage(
   navbarPage("Pokemon Dataset",
@@ -25,7 +25,7 @@ fluidPage(
                       sidebarLayout(
                         sidebarPanel(
                           sliderInput("scatter_obs", "number of observations:",
-                                      value = 10, min = 1, max = 800,
+                                      value = c(1,10), min = 1, max = 800,
                                       step = 1),
                           uiOutput("scatter_x_axis"),
                           uiOutput("scatter_y_axis"),
