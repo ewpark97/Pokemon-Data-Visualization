@@ -16,8 +16,8 @@ function(input, output) {
   radarData <- reactive({
     input$matchUp_go
     
-    pokemon_1_name <- input$matchUp_pokemon_1
-    pokemon_2_name <- input$matchUp_pokemon_2
+    pokemon_1_name <- isolate(input$matchUp_pokemon_1)
+    pokemon_2_name <- isolate(input$matchUp_pokemon_2)
     pokemon_1 <- filter(ds, Name == pokemon_1_name)
     pokemon_2 <- filter(ds, Name == pokemon_2_name)
     
